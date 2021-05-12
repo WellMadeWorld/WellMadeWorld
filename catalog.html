@@ -1,1 +1,593 @@
+<script>
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+  		$('.user-name').text(user.displayName);
+    }
+});
+</script>
+ 
+ <script>
+   const getCatalog = () => {
+      var catalogRef =  db.collection('new_catalog')
+      var newItemQuery = catalogRef.orderBy("name").limit(16);
+      newItemQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "newItemsGrid", "https://assets.website-files.com/6011846d13792869a7112a47/6011846d1379286222112cb5_Group%202248.png")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var trendingItemQuery = catalogRef.orderBy("clicks", "desc").limit(16);
+      trendingItemQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "trendingItemsGrid", "https://assets.website-files.com/6011846d13792869a7112a47/601d98f09e99733b131e10f1_nnn.svg")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var baggageItemQuery = catalogRef.where("item_category", "==", "Bags").limit(16);
+      baggageItemQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "baggageItemsGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var shoesItemQuery = catalogRef.where("item_category", "==", "Footware").limit(16);
+      shoesItemQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "shoesItemGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var mensFashionItemQuery = catalogRef.where("gender", "==", "Mens").limit(16);
+      mensFashionItemQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "mensFashionGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var madeInUSAQuery = catalogRef.where("filter_tags", "array-contains", 'MadeInUSA').limit(16);
+      madeInUSAQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "madeInUSAGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var madeInCanadaQuery = catalogRef.where("filter_tags", "array-contains", 'Made_in_Canada').limit(16);
+      madeInCanadaQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "madeInCanadaGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var womenOwnedBusinessQuery = catalogRef.where("filter_tags", "array-contains", 'Women_Owned_Business').limit(16);
+      womenOwnedBusinessQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "womenOwnedBusinessGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var productsThatGiveQuery = catalogRef.where("brand_id", "==", 'HMSJbKhExwwmVhHdNlJa').limit(16);
+      productsThatGiveQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "productsThatGiveGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var recycledPlasticQuery = catalogRef.where("filter_tags", "array-contains", 'recycled_plastic').limit(16);
+      recycledPlasticQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "recycledPlasticGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var recycledCottonQuery = catalogRef.where("filter_tags", "array-contains", 'recycled_cotton').limit(16);
+      recycledCottonQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "recycledCottonGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var plasticFreeItemsQuery = catalogRef.where("filter_tags", "array-contains", 'Plastic_Free').limit(16);
+      plasticFreeItemsQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "plasticFreeItemsGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var biodegradableItemsQuery = catalogRef.where("filter_tags", "array-contains", 'biodegradable').limit(16);
+      biodegradableItemsQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "biodegradableItemsGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var refillableItemsQuery = catalogRef.where("filter_tags", "array-contains", 'reusable_and_refillable').limit(16);
+      refillableItemsQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "refillableItemsGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var crueltyFreeItemsQuery = catalogRef.where("filter_tags", "array-contains", 'cruelty_free').limit(16);
+     crueltyFreeItemsQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "crueltyFreeItemsGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+      var veganItemsQuery = catalogRef.where("filter_tags", "array-contains", 'vegan').limit(16);
+     veganItemsQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "veganItemsGrid")
+      })
+      var womensFashionQuery = catalogRef.where("gender", "==", "Womens").limit(16);
+     womensFashionQuery.get()
+      .then((querySnapshot) => {
+          setupQueryItems(querySnapshot.docs, "womensFashionGrid")
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+ 	}
+ </script>
+ 
+ <script>
+    const setupQueryItems = (data, category, banner) => {
+    if (data.length) {
+        let html = ''
+        data.forEach(doc => {
+            const product = doc.data();
+	    let classname = 'text-block-171'
+	    if (product.name.length < 19) {
+		classname = 'nonscroller'    
+	    }
+            if (banner === undefined) {    
+            const gridElement = `
+	      <div>
+		<div class="ecommercewrapper">
+                  <div class="gridstyleblock">
+                    <a href='#'>
+                      <img data-src='${product.image_link}' class='catalog-image' id="${doc.id}" style="position: auto; width: auto; border-radius: 25px;">
+                    </a>
+                  </div>
+		<div class="productinfoblockmorph">
+		  <div>
+		    <div class="loopwrapper">
+			<div class="loopcontainer">
+		      	  <div class="${classname}">${product.name}</div>
+			</div>
+		    </div>
+		    <div class="text-block-172">${product.brand}</div>
+		  </div>
+		  <div class="p _2">$${product.price}</div>
+		</div>
+              </div>
+	    </div>
+            `
+            html += gridElement
+            } else {
+            const gridElement = `
+	    <div>
+		    <div data-w-id="b19cc609-7317-2dc7-73a1-99ed203c8d6a" class="ecommercewrapper">
+		    <div class='gridstyleblock'>
+			<img data-src="${banner}" loading="lazy" width="55" alt class="new" style="position: absolute; z-index: 1;">
+			<a href='#' class="modal-trigger" data-target="modal-product">
+			  <img data-src='${product.image_link}' class='catalog-image' id="${doc.id}" style="position: relative; z-index: 0; border-radius: 25px; width: auto;">
+			</a>
+		    </div>
+		    <div class="productinfoblockmorph">
+		      <div>
+		        <div class="loopwrapper">
+			  <div class="loopcontainer">
+		      	    <div class="${classname}">${product.name}</div>
+			  </div>
+		        </div>
+		        <div class="text-block-172">${product.brand}</div>
+		      </div>
+		    <div class="p _2">$${product.price}</div>
+		  </div>
+                </div>
+	    </div>
+            `
+            html += gridElement
+            }
+        })
+        document.getElementById(category).innerHTML = html
+	let slider = tns({
+          container: document.getElementById(category),
+          items: 4,
+          mode: 'carousel',
+          axis: 'horizontal',
+          slideBy: 'page',
+          controls: true,
+	  nav: false,
+          speed: 300,
+          autoplay: false,
+          prevButton: '#' + category + 'sb',
+  	  nextButton: '#' + category + 'sf',
+	  lazyload: true,
+	  lazyloadSelector: 'catalog-image',
+	  responsive: {
+	      1450: {
+		items: 5
+	      },
+	      1100: {
+		items: 4
+	      },
+	      800: {
+		items: 3
+	      },
+	      400: {
+		items: 2,
+	        controls: false,
+	        mouseDrag: true
+	      },  
+	      0: {
+		items: 1,
+	        controls: false,
+	        mouseDrag: true
+	      }
+	    }
+      });
+    } else {
+        document.getElementById(category).innerHTML = 'no items in the catalog'
+    }
+}
 
+getCatalog();
+</script>
+
+<script>
+  getItemFromCatalog = (id) => {
+      var docRef = db.collection("new_catalog").doc(id);
+
+      docRef.get().then(function(doc) {
+          if (doc.exists) {
+              setupItemModal(doc.data(), id);
+	      updateClicks(id);
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch(function(error) {
+          console.log("Error getting document:", error);
+      });
+  }   
+</script>
+
+<script>
+const setupItemModal = (data, id) => {
+    let allImages = [];
+    allImages.push(data.image_link, data.image2, data.image3, data.image4);
+    var modalProductQuery = db.collection('new_catalog').where("brand", "==", data.brand).limit(6);
+    setupTags(data, id);
+    checkSavedStatus(id);
+    brandHeaders(data.brand_id);
+    let imageHtml = '';
+    let descriptionHtml = '';
+    const imageElement = `
+    <div id="product-image">
+        <img src="${data.image_link}" style="height: auto; width: auto;"/>
+    </div>
+    `
+    const descriptionElement = `
+    <div id="product-description">
+        <p> ${data.description} </p>
+    </div>
+    `
+    
+    imageHtml += imageElement
+    descriptionHtml += descriptionElement
+    itemImage.innerHTML = imageHtml
+    itemDescription.innerHTML = descriptionHtml
+    productPrice.innerHTML = `$${data.price}`
+    productName.innerHTML = `${data.name}`
+    itemMaterialIngredients.innerHTML = `${data.ingredients_materials}`
+    itemInstructions.innerHTML = `${data.instructions}`
+    productSiteLink.setAttribute('href', `${data.product_link}`)
+    
+    let alternateImages = ''
+    
+    allImages.forEach(image => {
+      if (image == '') {      
+      } else {
+	const alternateImage = `
+	  <div class='ThumbNailImageBlock'>
+	    <a href='#'>
+	      <img src='${image}' class='thumbnail-image' id='${id}' style='border-radius: 25px; height: 120px; margin-right: 5px;'/>
+  	    </a>
+	  </div>
+	`
+	alternateImages += alternateImage
+      }
+    })
+    modalThumbnailImages.innerHTML = alternateImages
+    /*
+     modalProductQuery.get()
+      .then((querySnapshot) => {
+      var data = querySnapshot.docs
+      let modalHtml = ''
+        data.forEach(doc => {
+           modalProduct = doc.data()
+           const gridElement = `
+            <div class='gridstyleblock'>
+            	<img src='${modalProduct.image_link}' class='catalog-image' id="${doc.id}" style="position: auto; width: auto; border-radius: 25px">
+            </div>  
+            `
+            modalHtml += gridElement
+      })
+      modalBrandItemsGrid.innerHTML = modalHtml
+    })
+    */
+}
+
+const brandHeaders = (brand) => {
+    var docRef = db.collection('brands').doc(brand)
+
+    docRef.get().then(function(doc) {
+        if (doc.exists) {
+            data = doc.data();
+	    brandNameOne.innerHTML = `${data.name}`
+            brandDescriptionOne.innerHTML = `${data.description}`
+            brandImageOne.innerHTML = `<img src="${data.image_link}" style="height: 36px; width: 100px;"/>`
+            brandNameTwo.innerHTML = `${data.name}`
+            brandDescriptionTwo.innerHTML = `${data.description}`
+            brandImageTwo.innerHTML = `<img src="${data.image_link}" style="height: 36px; width: 100px;"/>`
+	    brandCause.innerHTML = `${data.the_cause}`
+	    brandPeople.innerHTML = `${data.the_people}`
+	    brandProducts.innerHTML = `${data.the_products}`
+	    if (data.media_1 == "") {
+		    modalVideoOne.innerHTML = ''
+	    } else {
+		    modalVideoOne.innerHTML = `<iframe width="420" height="345" src="https://www.youtube.com/embed/${data.media_1}">
+	      </iframe>`
+	    }
+	    if (data.media_2 == "") {
+		    modalVideoTwo.innerHTML = ''
+	    } else {
+		    modalVideoTwo.innerHTML = `<iframe width="420" height="345" src="https://www.youtube.com/embed/${data.media_2}">
+	      </iframe>`
+	    }
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+}
+
+const updateClicks = (item) => {
+    var docRef = db.collection('new_catalog').doc(item)
+
+    docRef.get().then((doc) => {
+        if (doc.exists) {
+            product = doc.data();
+            if (Number.isNaN(product.clicks) || product.clicks === undefined) {
+                docRef.update({clicks: 1});
+            } else {
+                let newClicks = product.clicks += 1;
+                docRef.update({clicks: newClicks})
+            }
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    var usersItemClicks = db.collection('users').doc(user.uid).collection('users_item_clicks').doc(item)
+                    usersItemClicks.get()
+                    .then(function(doc) {
+                        if (doc.exists) {
+                            let info = doc.data()
+                            let clicks = info.clicks
+                            usersItemClicks.update({clicks: clicks += 1})
+                        } else {
+                            usersItemClicks.set({
+                                clicks: 1,
+                                brand: product.brand,
+                                brand_id: product.brand_id,
+                                item_category: product.item_category
+                            })
+                        }
+                        
+                    })
+                }
+              });
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch((error) => {
+        console.log("Error getting document:", error);
+    });
+}
+
+let brandClicks = {}
+let categoryClicks = {}
+
+function getRecommendations() { 
+    auth.onAuthStateChanged(user =>  {
+        if (user) {
+	    recommendedContainer.style.display = 'block'
+            var docRef = db.collection('users').doc(user.uid).collection('users_item_clicks')
+            var topItems = docRef.orderBy("clicks", "desc").limit(6);
+            topItems.get()
+            .then((querySnapshot) => {
+                querySnapshot.docs.forEach(doc => {
+                    let data = doc.data()
+                    if (!(data.brand in brandClicks)) {
+                        brandClicks[data.brand] = data.clicks;
+                    } else {
+                        brandClicks[data.brand] = brandClicks[data.brand] += data.clicks 
+                    }
+                    if(!(data.item_category in categoryClicks)) {
+                        categoryClicks[data.item_category] = data.clicks;
+                    } else {
+                        categoryClicks[data.item_category] = categoryClicks[data.item_category] += data.clicks 
+                    }
+                })
+                setupRecommendations()
+            }).catch(function(error) {
+                console.log("Error getting document:", error);
+            });
+        } else {
+	  recommendedContainer.style.display = "none";
+	}
+    }) 
+}
+	
+getRecommendations();
+
+const setupRecommendations = () => {
+    let queries = []
+    let totalPoints = 0
+    for (const [key, value] of Object.entries(categoryClicks)) {
+        totalPoints += value
+    }
+    for (const [key, value] of Object.entries(categoryClicks)) {
+        let obj = {}
+        obj[key] = Math.floor((value/totalPoints) * 10)
+        queries.push(obj);
+    }
+    let html = '';
+    var docRef = db.collection('new_catalog')
+    queries.forEach(obj => {
+        let query = docRef.where('item_category', '==', Object.keys(obj)[0]).limit(Object.values(obj)[0])
+        query.get()
+        .then((querySnapshot) => {
+            querySnapshot.docs.forEach(doc => {
+                product = doc.data()
+		let classname = 'text-block-171'
+	        if (product.name.length < 19) {
+		  classname = 'nonscroller'    
+	        }
+                const gridElement = `
+		<div>
+		<div class="ecommercewrapper">
+                  <div class="gridstyleblock">
+                    <a href='#'>
+                      <img data-src='${product.image_link}' class='catalog-image' id="${doc.id}" style="position: auto; width: auto; border-radius: 25px;">
+                    </a>
+                  </div>
+		<div class="productinfoblockmorph">
+		  <div>
+		    <div class="loopwrapper">
+			<div class="loopcontainer">
+		      	  <div class="${classname}">${product.name}</div>
+			</div>
+		    </div>
+		    <div class="text-block-172">${product.brand}</div>
+		  </div>
+		  <div class="p _2">$${product.price}</div>
+		</div>
+              </div>
+	    </div>
+            `
+        html += gridElement
+        })
+    })
+    recommendedGrid.innerHTML = html;
+    let slider = tns({
+    container: document.getElementById('recommendedGrid'),
+    items: 4,
+    mode: 'carousel',
+    axis: 'horizontal',
+    slideBy: 'page',
+    controls: true,
+    prevButton: '#recommendedGridsb',
+    nextButton: '#recommendedGridsf',
+    speed: 300,
+    nav: false,
+    autoplay: false,
+    lazyload: true,
+    lazyloadSelector: 'catalog-image',
+    responsive: {
+    1450: {
+      items: 5
+    },
+    1100: {
+      items: 4
+    },
+    800: {
+      items: 3
+    },
+    500: {
+      items: 2      
+    }
+      }
+    });
+})
+}
+
+const openModal = (id) => {
+  itemModal.style.display = "flex";
+  itemModal.scrollTo(0,0);
+        getItemFromCatalog(id)
+        $(function() {
+            $('.modal').fadeIn();
+            $('.modal-background').fadeIn();
+            e.stopPropagation();
+        });
+        $('.close-modal').click(function() {
+            $('.modal').fadeOut();
+            $('.modal-background').fadeOut();
+  			});
+         $('.modal-background').click(function() {
+            $('.modal').fadeOut();
+            $('.modal-background').fadeOut();
+        }); 
+     		 $(document).keydown(function (event) {
+            if (event.keyCode == 27) {
+              $('.modal').fadeOut();
+              $('.modal-background').fadeOut();
+            }
+      	});
+}
+</script>
+
+<script>
+ wholeCatalog.addEventListener('click', (e) => {
+    if (e.target.matches('.catalog-image')) {
+    	openModal(e.target.id)
+    }
+})
+
+favoriteButtonContainer.addEventListener('click', (e) => {
+  if(e.target.matches(".favorite-button")) {
+    saveItem(e)
+  }
+})
+	
+itemModal.addEventListener('click', (e) => {
+  if(e.target.matches('.catalog-image')) {
+    $('.modal').fadeOut();
+    $('.modal-background').fadeOut();
+    itemModal.style.display = "flex";
+    openModal(e.target.id)
+  }
+})
+
+modalThumbnailImages.addEventListener('click', (e) => {
+  if(e.target.matches('.thumbnail-image')) {
+    changeThumbnailImage(e.target.getAttribute('src'))
+  }
+})
+	
+</script>
+
+<script>
+ if (window.location.href.substring(20,31) == "?productID=") {
+   openModal(window.location.href.substring(31,window.location.href.length))
+ }
+</script>
