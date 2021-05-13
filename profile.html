@@ -53,28 +53,33 @@ function setupFollowButton() {
 }
 
 function followUser() {
-  let currentUser = firebase.auth().currentUser;
+  
   let params = (new URL(document.location)).searchParams;
   let userID = params.get('user')
   let users_followers = []
   let loggedInUser = db.collection('users').doc(currentUser.uid)
   
-  db.collection('users').doc(userID).collection('followers').get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-        users_followers.push(doc.id);
-    });
-    let followersRef = db.collection("users").doc(userID).collection('followers').doc(currentUser.uid)
-    if (users_followers.includes(currentUser.uid)) {
-    	followersRef.delete()
-	setupFollowButton()
-    } else {
-    	loggedInUser.get().then(function(doc) {
-      	  followersRef.set(doc.data())
-	  setupFollowButton()
-        })
-    }
-  });
-  
+  auth.onAuthStateChanged(user =>  {
+        if (user) {
+            db.collection('users').doc(userID).collection('followers').get().then((querySnapshot) => {
+	    querySnapshot.forEach((doc) => {
+		users_followers.push(doc.id);
+	    });
+	    let followersRef = db.collection("users").doc(userID).collection('followers').doc(currentUser.uid)
+	    if (users_followers.includes(currentUser.uid)) {
+		followersRef.delete()
+		setupFollowButton()
+	    } else {
+		loggedInUser.get().then(function(doc) {
+		  followersRef.set(doc.data())
+		  setupFollowButton()
+		})
+	    }
+	  });
+        } else {
+	  console.log('user not logged in')	
+	}
+    })
 }
 
   const setupFavorites = (data) => {
@@ -329,11 +334,12 @@ userFollowButton.addEventListener('click', (e) => {
 })
 
 if (window.location.href.substring(66,72) == '?user=') {
-	openOtherUser()
+  openOtherUser()
   setupFollowButton()
 } else {
   setupRewardPoints();
   setupAccount();
   getUserFavorites();
+  setupFollowerList();
 }
 </script>
