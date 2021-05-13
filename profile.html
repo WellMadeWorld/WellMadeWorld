@@ -35,14 +35,28 @@ function openOtherUser() {
 }
 
 function setupFollowButton() {
-	userFollowButton.style.display = 'block';
+  let currentUser = firebase.auth().currentUser;
+  let params = (new URL(document.location)).searchParams;
+  let userID = params.get('user')
+  let users_followers = []
+  userFollowButton.style.display = 'block';
+  db.collection('users').doc(userID).collection('followers').get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        users_followers.push(doc.id);
+    });
+    if (users_followers.includes(currentUser.uid)) {
+    	userFollowButton.innerHTML = 'Unfollow'
+    } else {
+ 	userFollowButton.innerHTML = 'Follow'
+    }
+  })
 }
 
 function followUser() {
   let currentUser = firebase.auth().currentUser;
-	let params = (new URL(document.location)).searchParams;
-	let userID = params.get('user')
-	let users_followers = []
+  let params = (new URL(document.location)).searchParams;
+  let userID = params.get('user')
+  let users_followers = []
   let loggedInUser = db.collection('users').doc(currentUser.uid)
   
   db.collection('users').doc(userID).collection('followers').get().then((querySnapshot) => {
@@ -51,15 +65,15 @@ function followUser() {
     });
     let followersRef = db.collection("users").doc(userID).collection('followers').doc(currentUser.uid)
     if (users_followers.includes(currentUser.uid)) {
-    	console.log('deleting follower')
     	followersRef.delete()
+	setupFollowButton()
     } else {
     	loggedInUser.get().then(function(doc) {
-      	console.log(doc.data())
-      	followersRef.set(doc.data())
-      })
+      	  followersRef.set(doc.data())
+	  setupFollowButton()
+        })
     }
-	});
+  });
   
 }
 
