@@ -35,6 +35,7 @@ function openOtherUser() {
 }
 
 function setupFollowButton() {
+  let currentUser = firebase.auth().currentUser;
   let params = (new URL(document.location)).searchParams;
   let userID = params.get('user')
   let users_followers = []
