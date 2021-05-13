@@ -1,0 +1,325 @@
+<script>
+const getUserFavorites = () => {
+    auth.onAuthStateChanged(user =>  {
+        if (user) {
+            let userFavorites = db.collection('users').doc(user.uid).collection('users_favorites');
+            userFavorites.get()
+            .then((querySnapshot) => {
+                setupFavorites(querySnapshot.docs)
+            })
+        }
+    })
+}
+
+function openOtherUser() {
+	let params = (new URL(document.location)).searchParams;
+	let userID = params.get('user')
+  console.log('opening user ' + userID)
+  let userRef = db.collection('users').doc(userID)
+  userRef.get().then((doc) => {
+    if (doc.exists) {
+      let userInfo = doc.data();
+      wmwDisplayName.innerHTML = `${userInfo.name}`
+    } else {
+      console.log("No such document!");
+    }
+  }).catch((error) => {
+      console.log("Error getting document:", error);
+  });
+  creationDateContainer.innerHTML = ''
+  let userFavorites = db.collection('users').doc(userID).collection('users_favorites');
+  userFavorites.get()
+    .then((querySnapshot) => {
+    setupFavorites(querySnapshot.docs)
+  })
+}
+
+function setupFollowButton() {
+	userFollowButton.style.display = 'block';
+}
+
+function followUser() {
+  let currentUser = firebase.auth().currentUser;
+	let params = (new URL(document.location)).searchParams;
+	let userID = params.get('user')
+	let users_followers = []
+  let loggedInUser = db.collection('users').doc(currentUser.uid)
+  
+  db.collection('users').doc(userID).collection('followers').get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+        users_followers.push(doc.id);
+    });
+    let followersRef = db.collection("users").doc(userID).collection('followers').doc(currentUser.uid)
+    if (users_followers.includes(currentUser.uid)) {
+    	console.log('deleting follower')
+    	followersRef.delete()
+    } else {
+    	loggedInUser.get().then(function(doc) {
+      	console.log(doc.data())
+      	followersRef.set(doc.data())
+      })
+    }
+	});
+  
+}
+
+  const setupFavorites = (data) => {
+    if (data.length) {
+      let html = ''
+      data.forEach(doc => {
+        const product = doc.data();
+        let classname = 'text-block-171'
+        if (product.name.length < 19) {
+      		classname = 'nonscroller'    
+        }
+        const gridElement = `
+          <div>
+            <div class="ecommercewrapper">
+              <div class="gridstyleblock">
+              <a href='#'>
+              	<img src='${product.image_link}' class='catalog-image' id="${doc.id}" style="position: auto; width: auto; border-radius: 25px;">
+              </a>
+              </div>
+            <div class="productinfoblockmorph">
+              <div>
+                <div class="loopwrapper">
+              <div class="loopcontainer">
+                 <div class="${classname}">${product.name}</div>
+              </div>
+                </div>
+                <div class="text-block-172">${product.brand}</div>
+              </div>
+              <div class="p _2">$${product.price}</div>
+            </div>
+           </div>
+          </div>
+					`
+        html += gridElement
+      })
+      favoriteItemsGrid.innerHTML = html
+    } else {
+      favoriteItemsGrid.innerHTML = 'Start favoriting to start your list'
+    }
+  }
+
+getItemFromCatalog = (id) => {
+    var docRef = db.collection("catalog").doc(id);
+
+    docRef.get().then(function(doc) {
+        if (doc.exists) {
+            setupItemModal(doc.data(), id);
+        } else {
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+}
+
+const setupItemModal = (data, id) => {
+		checkSavedStatus(id);
+    brandHeaders(data.brand_id)
+    let imageHtml = ''
+    let descriptionHtml = ''
+    const imageElement = `
+    <div id="product-image">
+        <img src="${data.image_link}" style="height: 250px; width: 250px;"/>
+        <p> Price: $${data.price} </p>
+        <a href="${data.product_link}">Link to buy</a>
+        <div id='saveButtonDiv'>
+        </div>
+    </div>
+    `
+    const descriptionElement = `
+    <div id="product-description">
+        <p> ${data.description} </p>
+    </div>
+    `
+    
+    imageHtml += imageElement
+    descriptionHtml += descriptionElement
+
+    itemImage.innerHTML = imageHtml
+    itemDescription.innerHTML = descriptionHtml
+}
+
+const brandHeaders = (brand) => {
+    var docRef = db.collection('brands').doc(brand)
+
+    docRef.get().then(function(doc) {
+        if (doc.exists) {
+            brand = doc.data()
+            let html = ''
+            const element = `
+            <div id="brand-description">
+                <img src="${brand.image_link}" style="height: 36px; width: 100px;"/>
+                <p>${brand.description}</p>
+            </div>
+            `
+            html += element
+
+            brandInfo.innerHTML = html
+        } else {
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+}
+
+
+
+const checkSavedStatus = (docID) => {
+    auth.onAuthStateChanged(user =>  {
+        if (user) {
+            var userFavs = db.collection('users').doc(user.uid).collection('users_favorites');
+            userFavs.get().then(function(snapShot) {
+                userFavoriteList = [];
+                snapShot.docs.forEach(doc => {
+                    userFavoriteList.push(doc.id)
+                })
+                if (userFavoriteList.includes(docID)) {
+                    saveButtonDiv.innerHTML = `<a href="#" id="save-item-${docID}" class="favorite-button">Unsave item</a>`
+                } else {
+                    saveButtonDiv.innerHTML = `<a href="#" id="save-item-${docID}" class="favorite-button">Save item</a>`
+                }
+            }) 
+        }
+    })
+}
+
+const saveItem = (e) => {
+    var docID = e.target.id.substring(10, e.target.id.length)
+    console.log(docID)
+    auth.onAuthStateChanged(user =>  {
+        if (user) {
+        
+        //Get a list of the IDs currently inside the user favorites document
+        let document_ids = []
+    
+        db.collection("users").doc(user.uid).collection('users_favorites').get().then(function(querySnapshot) {
+            querySnapshot.forEach(function(doc) {
+                document_ids.push(doc.id);
+            });
+        });
+        
+        var item = db.collection("catalog").doc(docID)
+        var currentDoc = db.collection('users').doc(user.uid).collection('users_favorites').doc(docID)
+        item.get().then(function(doc) {
+            if(document_ids.includes(docID)) {
+                currentDoc.delete();
+            } else {
+                currentDoc.set(doc.data());
+            }
+            checkSavedStatus(docID);
+            getUserFavorites();
+        })
+
+        } else {
+            console.log('user not logged in.')
+        }
+    })
+}
+
+favoriteItemsGrid.addEventListener('click', (e) => {
+    if (e.target.matches('.catalog-image')) {
+    		itemModal.style.display = "flex";
+        getItemFromCatalog(e.target.id)
+        $(function() {
+            $('.modal').fadeIn();
+            $('.modal-background').fadeIn();
+            e.stopPropagation();
+        });
+        $('.close-modal').click(function() {
+            $('.modal').fadeOut();
+            $('.modal-background').fadeOut();
+  			});
+         $('.modal-background').click(function() {
+            $('.modal').fadeOut();
+            $('.modal-background').fadeOut();
+        }); 
+     		 $(document).keydown(function (event) {
+            if (event.keyCode == 27) {
+              $('.modal').fadeOut();
+              $('.modal-background').fadeOut();
+            }
+      	});
+    }
+})
+
+  itemImage.addEventListener('click', (e) => {
+    if(e.target.matches(".favorite-button")) {
+      saveItem(e)
+    }
+  })
+  
+function setupPurchaseHistory() {
+	firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    const docRef = db.collection('users').doc(user.uid).collection('users_orders')
+    docRef.get().then((querySnapshot) => {
+    	let html = ''
+      querySnapshot.forEach((doc) => {
+        const product = doc.data()
+        const purchaseElement = `
+        <div class="purchaseHistory">$${product.Product_Price} ${product.Order_Name} <a href="${product.Order_Receipt}">Receipt</a></div>
+        `
+        html += purchaseElement
+      });
+      purchaseHistoryContainer.innerHTML = html
+    });  
+  } else {
+    purchaseHistoryContainer.innerHTML = ''
+  }
+});
+  
+}
+
+setupPurchaseHistory();
+
+function setupRewardPoints() {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            var docRef = db.collection("users").doc(user.uid);
+            docRef.get().then((doc) => {
+            if (doc.exists) {
+                let userInfo = doc.data()
+                userRewardPoints.innerHTML = `Reward Points: ${userInfo.reward_points}`
+            } else {
+            		userRewardPoints.innerHTML = `Reward Points: 0`
+            }
+            }).catch((error) => {
+                console.log("Error getting document:", error);
+            });
+        } else {
+            userRewardPoints.innerHTML = `Reward Points: 0`
+        }
+    })
+}
+
+function setupAccount() {
+ firebase.auth().onAuthStateChanged(function(user) {
+     if (user) {
+       var signupDate = user.metadata.creationTime;
+       userCreationDate.innerHTML = `${signupDate.substring(5,16)}`
+       wmwDisplayName.innerHTML = `${user.displayName}`
+     } else {
+       wmwDisplayName.innerHTML = ''
+       userCreationDate.innerHTML = '0000'
+     }
+  })
+}
+
+userFollowButton.addEventListener('click', (e) => {
+	followUser();
+})
+
+if (window.location.href.substring(66,72) == '?user=') {
+	openOtherUser()
+  setupFollowButton()
+} else {
+  setupRewardPoints();
+  setupAccount();
+  getUserFavorites();
+}
+</script>
