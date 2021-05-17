@@ -1,5 +1,13 @@
 <script>
 'use strict';
+
+onMount(async () => {
+	let user = await Auth.currentUser;
+	console.log(user);
+});
+onMount();
+	
+
 const getUserFavorites = () => {
 	auth.onAuthStateChanged(user => {
 		if (user) {
