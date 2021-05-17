@@ -1,10 +1,10 @@
 <script>
 'use strict';
 
-onMount(async () => {
+async function onMount(){
 	let user = await firebase.auth().currentUser;
 	console.log(user);
-});
+}
 onMount();
 	
 
