@@ -1,11 +1,5 @@
 <script>
 'use strict';
-
-async function onMount(){
-	let user = await firebase.auth().currentUser;
-	console.log(user.uid);
-}
-onMount();
 	
 
 const getUserFavorites = () => {
