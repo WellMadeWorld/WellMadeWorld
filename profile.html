@@ -341,7 +341,7 @@ userFollowButton.addEventListener('click', (e) => {
 	followUser();
 });
 
-if (window.location.href.substring(window.location.href.indexOf("?user=")+6) == "?user=") {
+if (window.location.href.includes("?user=") {
 	console.log("viewing another profile");
 	openOtherUser();
 	setupFollowButton();
