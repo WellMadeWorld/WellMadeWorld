@@ -2,7 +2,7 @@
 'use strict';
 
 onMount(async () => {
-	let user = await Auth.currentUser;
+	let user = await firebase.auth().currentUser;
 	console.log(user);
 });
 onMount();
