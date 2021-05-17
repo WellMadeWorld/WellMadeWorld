@@ -62,12 +62,15 @@ function followUser() {
 
 	auth.onAuthStateChanged(user => {
 		if (user) {
+			console.log('user authenticated..');
 			let loggedInUser = db.collection('users').doc(user.uid);
+			console.log(`loggedInUser: ${loggedInUser}`);
 			db.collection('users').doc(userID).collection('followers').get().then((querySnapshot) => {
 				querySnapshot.forEach((doc) => {
 					users_followers.push(doc.id);
 				});
 				let followersRef = db.collection("users").doc(userID).collection('followers').doc(user.uid);
+				console.log(`followersRef: ${followersRef}`);
 				if (users_followers.includes(user.uid)) {
 					followersRef.delete();
 					setupFollowButton();
