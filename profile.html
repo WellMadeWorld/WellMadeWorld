@@ -1,6 +1,6 @@
 <script>
 'use strict';
-	
+
 
 const getUserFavorites = () => {
 	auth.onAuthStateChanged(user => {
@@ -97,26 +97,26 @@ const setupFavorites = (data) => {
 				classname = 'nonscroller';
 			}
 			const gridElement = `
-          <div>
-            <div class="ecommercewrapper">
-              <div class="gridstyleblock">
-              <a href='#'>
-              	<img src='${product.image_link}' class='catalog-image' id="${doc.id}" style="position: auto; width: auto; border-radius: 25px;">
-              </a>
-              </div>
-            <div class="productinfoblockmorph">
-              <div>
-                <div class="loopwrapper">
-              <div class="loopcontainer">
-                 <div class="${classname}">${product.name}</div>
-              </div>
-                </div>
-                <div class="text-block-172">${product.brand}</div>
-              </div>
-              <div class="p _2">$${product.price}</div>
-            </div>
-           </div>
-          </div>
+		  <div>
+			<div class="ecommercewrapper">
+			  <div class="gridstyleblock">
+			  <a href='#'>
+				  <img src='${product.image_link}' class='catalog-image' id="${doc.id}" style="position: auto; width: auto; border-radius: 25px;">
+			  </a>
+			  </div>
+			<div class="productinfoblockmorph">
+			  <div>
+				<div class="loopwrapper">
+			  <div class="loopcontainer">
+				 <div class="${classname}">${product.name}</div>
+			  </div>
+				</div>
+				<div class="text-block-172">${product.brand}</div>
+			  </div>
+			  <div class="p _2">$${product.price}</div>
+			</div>
+		   </div>
+		  </div>
 					`;
 			html += gridElement;
 		});
@@ -146,19 +146,19 @@ const setupItemModal = (data, id) => {
 	let imageHtml = '';
 	let descriptionHtml = '';
 	const imageElement = `;
-    <div id="product-image">
-        <img src="${data.image_link}" style="height: 250px; width: 250px;"/>
-        <p> Price: $${data.price} </p>
-        <a href="${data.product_link}">Link to buy</a>
-        <div id='saveButtonDiv'>
-        </div>
-    </div>
-    `;
+	<div id="product-image">
+		<img src="${data.image_link}" style="height: 250px; width: 250px;"/>
+		<p> Price: $${data.price} </p>
+		<a href="${data.product_link}">Link to buy</a>
+		<div id='saveButtonDiv'>
+		</div>
+	</div>
+	`;
 	const descriptionElement = `
-    <div id="product-description">
-        <p> ${data.description} </p>
-    </div>
-    `;
+	<div id="product-description">
+		<p> ${data.description} </p>
+	</div>
+	`;
 
 	imageHtml += imageElement;
 	descriptionHtml += descriptionElement;
@@ -175,11 +175,11 @@ const brandHeaders = (brand) => {
 			brand = doc.data();
 			let html = '';
 			const element = `;
-            <div id="brand-description">
-                <img src="${brand.image_link}" style="height: 36px; width: 100px;"/>
-                <p>${brand.description}</p>
-            </div>
-            `;
+			<div id="brand-description">
+				<img src="${brand.image_link}" style="height: 36px; width: 100px;"/>
+				<p>${brand.description}</p>
+			</div>
+			`;
 			html += element;
 
 			brandInfo.innerHTML = html;
@@ -286,8 +286,8 @@ function setupPurchaseHistory() {
 				querySnapshot.forEach((doc) => {
 					const product = doc.data();
 					const purchaseElement = `;
-        <div class="purchaseHistory">$${product.Product_Price} ${product.Order_Name} <a href="${product.Order_Receipt}">Receipt</a></div>
-        `;
+		<div class="purchaseHistory">$${product.Product_Price} ${product.Order_Name} <a href="${product.Order_Receipt}">Receipt</a></div>
+		`;
 					html += purchaseElement;
 				});
 				purchaseHistoryContainer.innerHTML = html;
@@ -335,13 +335,13 @@ function setupAccount() {
 }
 
 
-	
+
 
 userFollowButton.addEventListener('click', (e) => {
 	followUser();
 });
 
-if (window.location.href.substring(66, 72) == '?user=') {
+if (window.location.href.substring(window.location.href.indexOf("?user=")+6)) {
 	console.log("viewing another profile");
 	openOtherUser();
 	setupFollowButton();
@@ -353,47 +353,50 @@ if (window.location.href.substring(66, 72) == '?user=') {
 	getUserFavorites();
 	setupFollowerList();
 }
-	
-	
+
+
 function setupFollowerList() {
   firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-    	let followersRef = db.collection('users').doc(user.uid).collection('followers');
-      followersRef.get()
-      .then((querySnapshot) => {
-        let html = '';
-        querySnapshot.forEach((doc) => {
-            let followerInfo = doc.data();
-            console.log(followerInfo);
-            let followerhtml = `
-              <a href="#" class="follower w-inline-block">
-                <div class="div-block-712"></div>
-                <div class="text-block-180" id='${doc.id}'>${followerInfo.name}</div>
-              </a>
-            `;
-            html += followerhtml;
-        });
-        friendsListContainer.innerHTML = html;
-    });
-    } else {
-    	console.log('user not logged in.');
-    }
+	if (user) {
+		if(window.location.href.contains("?user=")){
+			let followersRef = db.collection('users').doc(window.location.href.substring(window.location.href.indexOf("?user=")+6).collection('followers'));
+		} else {
+			let followersRef = db.collection('users').doc(user.uid).collection('followers');
+		}
+		followersRef.get()
+			.then((querySnapshot) => {
+				let html = '';
+				querySnapshot.forEach((doc) => {
+				let followerInfo = doc.data();
+				console.log(followerInfo);
+				let followerhtml = `
+					<a href="#" class="follower w-inline-block">
+						<div class="div-block-712"></div>
+						<div class="text-block-180" id='${doc.id}'>${followerInfo.name}</div>
+					</a>`;
+			html += followerhtml;
+		});
+		friendsListContainer.innerHTML = html;
+	});
+	} else {
+		console.log('user not logged in.');
+	}
   });
 }
 
 function openProfile(userID) {
-	
+
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
 	firebase.auth().onAuthStateChanged(function(user) {
-    checkLoginStatus();
+	checkLoginStatus();
   });
 });
 
 friendsListContainer.addEventListener('click', (e) => {
 	if (e.target.matches('.text-block-180')) {
-  	window.location.href = `https://wmwv2-c20fa8e784bbf1172ca-c1f2c3fad1b5f.webflow.io/profile?user=${e.target.id}`;
+	  window.location.href = `https://wmwv2-c20fa8e784bbf1172ca-c1f2c3fad1b5f.webflow.io/profile?user=${e.target.id}`;
   }
 });
 </script>
