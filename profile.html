@@ -339,10 +339,12 @@ userFollowButton.addEventListener('click', (e) => {
 });
 
 if (window.location.href.substring(66, 72) == '?user=') {
+	console.log("viewing another profile");
 	openOtherUser();
 	setupFollowButton();
 	setupFollowerList();
 } else {
+	console.log("viewing your profile");
 	setupRewardPoints();
 	setupAccount();
 	getUserFavorites();
