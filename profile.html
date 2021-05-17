@@ -360,10 +360,9 @@ function setupFollowerList() {
   firebase.auth().onAuthStateChanged(function(user) {
 	let urlRef = window.location.href;  
 	if (user) {
+		let followersRef = db.collection('users').doc(user.uid).collection('followers');
 		if(urlRef.includes("?user=")){
-			let followersRef = db.collection('users').doc(urlRef.substring(urlRef.indexOf("?user=")+6)).collection('followers');
-		} else {
-			let followersRef = db.collection('users').doc(user.uid).collection('followers');
+			followersRef = db.collection('users').doc(urlRef.substring(urlRef.indexOf("?user=")+6)).collection('followers');
 		}
 		followersRef.get()
 			.then((querySnapshot) => {
