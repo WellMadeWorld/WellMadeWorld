@@ -122,7 +122,7 @@ const setupFavorites = (data) => {
 	}
 };
 
-getItemFromCatalog = (id) => {
+const getItemFromCatalog = (id) => {
 	var docRef = db.collection("catalog").doc(id);
 
 	docRef.get().then(function(doc) {
