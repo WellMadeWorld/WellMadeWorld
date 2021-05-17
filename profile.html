@@ -334,6 +334,9 @@ function setupAccount() {
 	});
 }
 
+
+	
+
 userFollowButton.addEventListener('click', (e) => {
 	followUser();
 });
@@ -350,4 +353,47 @@ if (window.location.href.substring(66, 72) == '?user=') {
 	getUserFavorites();
 	setupFollowerList();
 }
+	
+	
+function setupFollowerList() {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+    	followersRef = db.collection('users').doc(user.uid).collection('followers');
+      followersRef.get()
+      .then((querySnapshot) => {
+        let html = '';
+        querySnapshot.forEach((doc) => {
+            let followerInfo = doc.data();
+            console.log(followerInfo);
+            let followerhtml = `
+              <a href="#" class="follower w-inline-block">
+                <div class="div-block-712"></div>
+                <div class="text-block-180" id='${doc.id}'>${followerInfo.name}</div>
+              </a>
+            `;
+            html += followerhtml;
+        });
+        friendsListContainer.innerHTML = html;
+    });
+    } else {
+    	console.log('user not logged in.');
+    }
+  });
+}
+
+function openProfile(userID) {
+	
+}
+
+window.addEventListener('DOMContentLoaded', (event) => {
+	firebase.auth().onAuthStateChanged(function(user) {
+    checkLoginStatus();
+  });
+});
+
+friendsListContainer.addEventListener('click', (e) => {
+	if (e.target.matches('.text-block-180')) {
+  	window.location.href = `https://wmwv2-c20fa8e784bbf1172ca-c1f2c3fad1b5f.webflow.io/profile?user=${e.target.id}`;
+  }
+});
 </script>
