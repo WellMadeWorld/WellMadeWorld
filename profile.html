@@ -38,7 +38,6 @@ function openOtherUser() {
 }
 
 function setupFollowButton() {
-	let currentUser = firebase.auth().currentUser;
 	let params = (new URL(document.location)).searchParams;
 	let userID = params.get('user');
 	let users_followers = [];
@@ -47,9 +46,7 @@ function setupFollowButton() {
 		querySnapshot.forEach((doc) => {
 			users_followers.push(doc.id);
 		});
-		console.log(currentUser);
-		console.log(firebase.auth().currentUser);
-		if (users_followers.includes(currentUser.uid)) {
+		if (users_followers.includes(firebase.auth().currentUser)) {
 			userFollowButton.innerHTML = 'Unfollow';
 		} else {
 			userFollowButton.innerHTML = 'Follow';
