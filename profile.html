@@ -341,6 +341,7 @@ userFollowButton.addEventListener('click', (e) => {
 if (window.location.href.substring(66, 72) == '?user=') {
 	openOtherUser();
 	setupFollowButton();
+	setupFollowerList();
 } else {
 	setupRewardPoints();
 	setupAccount();
