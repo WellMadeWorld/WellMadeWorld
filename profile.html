@@ -46,7 +46,7 @@ function setupFollowButton() {
 		querySnapshot.forEach((doc) => {
 			users_followers.push(doc.id);
 		});
-		if (users_followers.includes(firebase.auth().currentUser)) {
+		if (users_followers.includes(firebase.auth().currentUser.uid)) {
 			userFollowButton.innerHTML = 'Unfollow';
 		} else {
 			userFollowButton.innerHTML = 'Follow';
