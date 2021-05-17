@@ -359,7 +359,7 @@ function setupFollowerList() {
   firebase.auth().onAuthStateChanged(function(user) {
 	if (user) {
 		if(window.location.href.contains("?user=")){
-			let followersRef = db.collection('users').doc(window.location.href.substring(window.location.href.indexOf("?user=")+6).collection('followers'));
+			let followersRef = db.collection('users').doc(window.location.href.substring(window.location.href.indexOf("?user=")+6)).collection('followers');
 		} else {
 			let followersRef = db.collection('users').doc(user.uid).collection('followers');
 		}
