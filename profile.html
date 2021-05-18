@@ -54,38 +54,34 @@ function setupFollowButton() {
 	});
 }
 
-async function followUser() {
+function followUser() {
 	let params = (new URL(document.location)).searchParams;
 	let userID = params.get('user');
 	let users_followers = [];
-	await {
-		auth.onAuthStateChanged(user => {
-			if (user) {
-				let loggedInUser = db.collection('users').doc(user.uid);
-				db.collection('users').doc(userID).collection('followers').get().then((querySnapshot) => {
-					querySnapshot.forEach((doc) => {
-						users_followers.push(doc.id);
-					});
-					let followersRef = db.collection("users").doc(userID).collection('followers').doc(user.uid);
-					if (users_followers.includes(user.uid)) {
-						followersRef.delete();
-						setupFollowButton();
-					} else {
-						loggedInUser.get().then(function(doc) {
-							followersRef.set(doc.data());
-							setupFollowButton();
-						});
-					}
+	
+	auth.onAuthStateChanged(user => {
+		if (user) {
+			let loggedInUser = db.collection('users').doc(user.uid);
+			db.collection('users').doc(userID).collection('followers').get().then((querySnapshot) => {
+				querySnapshot.forEach((doc) => {
+					users_followers.push(doc.id);
 				});
-			} else {
-				console.log('user not logged in');
-			}
-		});
-	}
-	
-	setupFollowerList();
-	
-	
+				let followersRef = db.collection("users").doc(userID).collection('followers').doc(user.uid);
+				if (users_followers.includes(user.uid)) {
+					followersRef.delete();
+					setupFollowButton();
+				} else {
+					loggedInUser.get().then(function(doc) {
+						followersRef.set(doc.data());
+						setupFollowButton();
+					});
+				}
+			});
+		} else {
+			console.log('user not logged in');
+		}
+	});
+	}	
 }
 
 const setupFavorites = (data) => {
@@ -338,9 +334,13 @@ function setupAccount() {
 
 
 
-userFollowButton.addEventListener('click', (e) => {
-	followUser();
+userFollowButton.addEventListener('click', () => {
+	callFollow().then(setupFollowerList());
 });
+
+async function callFollow() {
+	followUser();
+}
 
 if (window.location.href.includes("?user=")) {
 	console.log("viewing another profile");
