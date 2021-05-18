@@ -85,7 +85,7 @@ function followUser() {
 			console.log('user not logged in');
 		}
 	});
-	setupFollowerList();
+	
 }
 
 const setupFavorites = (data) => {
@@ -339,7 +339,7 @@ function setupAccount() {
 
 
 userFollowButton.addEventListener('click', (e) => {
-	followUser();
+	followUser().then(setupFollowerList());
 });
 
 if (window.location.href.includes("?user=")) {
