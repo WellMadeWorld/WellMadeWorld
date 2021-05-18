@@ -70,10 +70,12 @@ function followUser() {
 				if (users_followers.includes(user.uid)) {
 					followersRef.delete();
 					setupFollowButton();
+					setupFollowerList();
 				} else {
 					loggedInUser.get().then(function(doc) {
 						followersRef.set(doc.data());
 						setupFollowButton();
+						setupFollowerList();
 					});
 				}
 			});
@@ -361,6 +363,7 @@ function setupFollowerList() {
   firebase.auth().onAuthStateChanged(function(user) {
 	let urlRef = window.location.href;  
 	if (user) {
+		console.log("setting up list..");
 		let followersRef = db.collection('users').doc(user.uid).collection('followers');
 		if(urlRef.includes("?user=")){
 			followersRef = db.collection('users').doc(urlRef.substring(urlRef.indexOf("?user=")+6)).collection('followers');
