@@ -86,6 +86,8 @@ function followUser() {
 		}
 	});
 	
+	setTimeout(setupFollowerList(), 1500);
+	
 }
 
 const setupFavorites = (data) => {
@@ -339,7 +341,7 @@ function setupAccount() {
 
 
 userFollowButton.addEventListener('click', (e) => {
-	followUser().then(setupFollowerList());
+	followUser();
 });
 
 if (window.location.href.includes("?user=")) {
