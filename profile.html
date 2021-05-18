@@ -410,7 +410,24 @@ const searchClient = algoliasearch(
   '7781e10fe7c79ea43fac337934ffaab9'
 );
 	
+const algoliaSearch = instantsearch({
+  indexName: 'users',
+  searchClient,
+});
 	
+algoliaSearch.addWidgets([
+  instantsearch.widgets.searchBox({
+  container: string|HTMLElement,
+  // Optional parameters
+  placeholder: "Search users...",
+  autofocus: false,
+  searchAsYouType: true,
+  showReset: true,
+  showSubmit: false,
+  showLoadingIndicator: false,
+  })
+]);
+
 	
 	
 	
