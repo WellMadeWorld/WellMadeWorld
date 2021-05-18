@@ -55,10 +55,10 @@ function setupFollowButton() {
 }
 
 async function followUser() {
+	let params = (new URL(document.location)).searchParams;
+	let userID = params.get('user');
+	let users_followers = [];
 	await {
-		let params = (new URL(document.location)).searchParams;
-		let userID = params.get('user');
-		let users_followers = [];
 		auth.onAuthStateChanged(user => {
 			if (user) {
 				let loggedInUser = db.collection('users').doc(user.uid);
