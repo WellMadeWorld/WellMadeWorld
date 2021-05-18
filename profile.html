@@ -369,22 +369,21 @@ function setupFollowerList() {
 		if(urlRef.includes("?user=")){
 			followersRef = db.collection('users').doc(urlRef.substring(urlRef.indexOf("?user=")+6)).collection('followers');
 		}
-		console.log(followersRef);
-		console.log(followersRef.length);
 		followersRef.get()
-			.then((querySnapshot) => {
-				let html = '';
-				querySnapshot.forEach((doc) => {
-				let followerInfo = doc.data();
-				let followerhtml = `
-					<a href="#" class="follower w-inline-block">
-						<div class="div-block-712"></div>
-						<div class="text-block-180" id='${doc.id}'>${followerInfo.name}</div>
-					</a>`;
+		.then((querySnapshot) => {
+			console.log(querySnapshot.size);
+			let html = '';
+			querySnapshot.forEach((doc) => {
+			let followerInfo = doc.data();
+			let followerhtml = `
+				<a href="#" class="follower w-inline-block">
+					<div class="div-block-712"></div>
+					<div class="text-block-180" id='${doc.id}'>${followerInfo.name}</div>
+				</a>`;
 			html += followerhtml;
-		});
+			});
 		friendsListContainer.innerHTML = html;
-	});
+		});
 	} else {
 		console.log('user not logged in.');
 	}
