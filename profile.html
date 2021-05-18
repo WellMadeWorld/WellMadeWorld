@@ -372,6 +372,7 @@ function setupFollowerList() {
 		followersRef.get()
 		.then((querySnapshot) => {
 			console.log(querySnapshot.size);
+			document.getElementById("follower-count").value = querySnapshot.size;
 			let html = '';
 			querySnapshot.forEach((doc) => {
 			let followerInfo = doc.data();
