@@ -365,6 +365,7 @@ function setupFollowerList() {
 	if (user) {
 		console.log("setting up list..");
 		let followersRef = db.collection('users').doc(user.uid).collection('followers');
+		console.log(followersRef.length);
 		if(urlRef.includes("?user=")){
 			followersRef = db.collection('users').doc(urlRef.substring(urlRef.indexOf("?user=")+6)).collection('followers');
 		}
