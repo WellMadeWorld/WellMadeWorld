@@ -363,7 +363,6 @@ function setupFollowerList() {
   firebase.auth().onAuthStateChanged(function(user) {
 	let urlRef = window.location.href;  
 	if (user) {
-		console.log("setting up list..");
 		let followersRef = db.collection('users').doc(user.uid).collection('followers');
 		
 		if(urlRef.includes("?user=")){
@@ -371,7 +370,6 @@ function setupFollowerList() {
 		}
 		followersRef.get()
 		.then((querySnapshot) => {
-			console.log(querySnapshot.size);
 			document.getElementById("follower-count").innerHTML = `${querySnapshot.size}`;
 			let html = '';
 			querySnapshot.forEach((doc) => {
