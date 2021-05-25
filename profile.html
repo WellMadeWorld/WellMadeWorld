@@ -416,17 +416,20 @@ const search = instantsearch({
 	
 	
 	
+search.addWidgets([
+	instantsearch.widgets.searchBox({
+	container: '#user-search-container',
+	// Optional parameters
+	placeholder: "Search users...",
+	autofocus: false,
+	searchAsYouType: true,
+	showReset: false,
+	showSubmit: false,
+	showLoadingIndicator: false,
+	});
+]);
 
-instantsearch.widgets.searchBox({
-container: '#user-search-container',
-// Optional parameters
-placeholder: "Search users...",
-autofocus: false,
-searchAsYouType: true,
-showReset: false,
-showSubmit: false,
-showLoadingIndicator: false,
-});
+search();
 
 	
 	
