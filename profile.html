@@ -409,11 +409,10 @@ const searchClient = algoliasearch(
   '6MV9DYEKML',
   '7781e10fe7c79ea43fac337934ffaab9'
 );
+
+const index = searchClient.initIndex('users');
 	
-const algoliaSearch = instantsearch({
-  indexName: 'users',
-  searchClient,
-});
+	
 	
 algoliaSearch.addWidgets([
   instantsearch.widgets.searchBox({
@@ -422,7 +421,7 @@ algoliaSearch.addWidgets([
   placeholder: "Search users...",
   autofocus: false,
   searchAsYouType: true,
-  showReset: true,
+  showReset: false,
   showSubmit: false,
   showLoadingIndicator: false,
   })
