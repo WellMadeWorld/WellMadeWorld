@@ -405,30 +405,29 @@ friendsListContainer.addEventListener('click', (e) => {
   }
 });
 	
-const searchClient = algoliasearch(
-  '6MV9DYEKML',
-  '7781e10fe7c79ea43fac337934ffaab9'
-);
-
-const algoliaSearch = instantsearch({
+	
+const search = instantsearch({
   indexName: 'users',
-  searchClient,
+  searchClient: algoliasearch(
+    '6MV9DYEKML',
+    '7781e10fe7c79ea43fac337934ffaab9'
+  ),
 });
 	
 	
 	
-algoliaSearch.addWidgets([
-  instantsearch.widgets.searchBox({
-  container: '#user-search-container',
-  // Optional parameters
-  placeholder: "Search users...",
-  autofocus: false,
-  searchAsYouType: true,
-  showReset: false,
-  showSubmit: false,
-  showLoadingIndicator: false,
-  })
-]);
+
+instantsearch.widgets.searchBox({
+container: '#user-search-container',
+// Optional parameters
+placeholder: "Search users...",
+autofocus: false,
+searchAsYouType: true,
+showReset: false,
+showSubmit: false,
+showLoadingIndicator: false,
+});
+
 	
 	
 	
