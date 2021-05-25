@@ -389,15 +389,15 @@ function setupFollowerList() {
   });
 }
 
-function openProfile(userID) {
+// function openProfile(userID) {
 
-}
+// }
 
-window.addEventListener('DOMContentLoaded', (event) => {
-	firebase.auth().onAuthStateChanged(function(user) {
-	checkLoginStatus();
-  });
-});
+// window.addEventListener('DOMContentLoaded', (event) => {
+// 	firebase.auth().onAuthStateChanged(function(user) {
+// 	checkLoginStatus();
+//   });
+// });
 
 friendsListContainer.addEventListener('click', (e) => {
 	if (e.target.matches('.text-block-180')) {
