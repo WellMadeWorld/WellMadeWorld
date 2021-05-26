@@ -217,8 +217,8 @@ firebase.auth().onAuthStateChanged((user) => {
 	  nav: false,
           speed: 300,
           autoplay: false,
-          prevButton: '#' + category + 'sb',
-  	  nextButton: '#' + category + 'sf',
+          prevButton: document.getElementById(`#${category}sb`),
+  	  nextButton: document.getElementById(`#${category}sf`),
 	  lazyload: true,
 	  lazyloadSelector: 'catalog-image',
 	  responsive: {
