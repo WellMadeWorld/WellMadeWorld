@@ -416,7 +416,7 @@ const search = instantsearch({
 	
 	
 	
-search.addWidgets([
+search.addWidget(
 	instantsearch.widgets.searchBox({
 	container: '#user-search-container',
 	// Optional parameters
@@ -427,7 +427,9 @@ search.addWidgets([
 	showSubmit: false,
 	showLoadingIndicator: false,
 	})
-]);
+);
+
+search.start();
 
 	
 </script>
