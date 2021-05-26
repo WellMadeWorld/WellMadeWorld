@@ -434,7 +434,10 @@ search.addWidget(
 		container: '#user-hits-container',
 		templates: {
 			item: `
-                <p>{ "attribute": "name" } {"attribute": "objectID"}</p>
+                <p>
+		{{#helpers.highlight}}{ "attribute": "name" }{{/helpers.highlight}} 
+		{{#helpers.highlight}}{ "attribute": "objectID"}{{/helpers.highlight}}
+		</p>
                 `,
 		},
 	})
