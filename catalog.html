@@ -217,9 +217,10 @@ firebase.auth().onAuthStateChanged((user) => {
 	  nav: false,
           speed: 300,
           autoplay: false,
-	  controlsContainer: '#newItemsGridControls',
-          prevButton: document.getElementById(`newItemsGridsb`),
-  	  nextButton: document.getElementById(`newItemsGridsf`),
+	  controlsContainer: `#${category}Controls`,
+          prevButton: `#${category}sb`,
+  	  nextButton: `#${category}sf`,
+	  preventScrollOnTouch: 'auto',
 	  lazyload: true,
 	  lazyloadSelector: 'catalog-image',
 	  responsive: {
@@ -239,14 +240,12 @@ firebase.auth().onAuthStateChanged((user) => {
 	      400: {
 		items: 2,
 	        controls: false,
-	        mouseDrag: true,
-		preventScrollOnTouch: 'auto'
+	        mouseDrag: true
 	      },  
 	      0: {
 		items: 1,
 	        controls: false,
-	        mouseDrag: true,
-		preventScrollOnTouch: 'auto'
+	        mouseDrag: true
 	      }
 	    }
       });
