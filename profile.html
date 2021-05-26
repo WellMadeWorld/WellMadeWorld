@@ -433,11 +433,7 @@ search.addWidget(
 	instantsearch.widgets.hits({
 		container: '#user-hits-container',
 		templates: {
-			item: `
-                <p>
-		{{#helpers.highlight}}{ "attribute": "name" }{{/helpers.highlight}} 
-		</p>
-                `,
+			item: data => `<p>${data.name} - ${data.objectID}</p>`,
 		},
 	})
 );
