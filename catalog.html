@@ -214,7 +214,7 @@ firebase.auth().onAuthStateChanged((user) => {
           axis: 'horizontal',
           slideBy: 'page',
           controls: true,
-	  nav: false,
+	  nav: true,
           speed: 300,
           autoplay: false,
 	  controlsContainer: `#${category}Controls`,
@@ -239,12 +239,10 @@ firebase.auth().onAuthStateChanged((user) => {
 	      },
 	      400: {
 		items: 2,
-	        controls: true,
 	        mouseDrag: true
 	      },  
 	      0: {
 		items: 1,
-	        controls: true,
 	        mouseDrag: true
 	      }
 	    }
