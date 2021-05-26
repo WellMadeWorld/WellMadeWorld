@@ -433,13 +433,7 @@ search.addWidget(
 	instantsearch.widgets.hits({
 		container: '#user-hits-container',
 		templates: {
-			item: `
-		      <a href="https://www.wmw.eco/profile?user={{"attribute": "objectID"}}">
-			{{ __hitIndex }}:
-			{{#helpers.highlight}}{ "attribute": "name" }{{/helpers.highlight}}
-		      </a>
-		      <p>{{ description }}</p>
-	    	`,
+			item: `<a href="https://www.wmw.eco/profile?user={ 'attribute': 'objectID' }"> { 'attribute': 'name' }</a>`,
 		},
 	})
 );
