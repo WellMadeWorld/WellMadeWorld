@@ -217,8 +217,7 @@ firebase.auth().onAuthStateChanged((user) => {
 	  nav: false,
           speed: 300,
           autoplay: false,
-          prevButton: document.getElementById(`#${category}sb`),
-  	  nextButton: document.getElementById(`#${category}sf`),
+          controlsContainer: document.getElementById("sliderControlsContainer"),
 	  lazyload: true,
 	  lazyloadSelector: 'catalog-image',
 	  responsive: {
