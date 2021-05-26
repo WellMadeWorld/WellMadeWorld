@@ -58,7 +58,7 @@ function followUser() {
 	let params = (new URL(document.location)).searchParams;
 	let userID = params.get('user');
 	let users_followers = [];
-	
+
 	auth.onAuthStateChanged(user => {
 		if (user) {
 			let loggedInUser = db.collection('users').doc(user.uid);
@@ -83,7 +83,7 @@ function followUser() {
 			console.log('user not logged in');
 		}
 	});
-}	
+}
 
 
 const setupFavorites = (data) => {
@@ -360,33 +360,33 @@ if (window.location.href.includes("?user=")) {
 
 function setupFollowerList() {
 
-  firebase.auth().onAuthStateChanged(function(user) {
-	let urlRef = window.location.href;  
-	if (user) {
-		let followersRef = db.collection('users').doc(user.uid).collection('followers');
-		
-		if(urlRef.includes("?user=")){
-			followersRef = db.collection('users').doc(urlRef.substring(urlRef.indexOf("?user=")+6)).collection('followers');
-		}
-		followersRef.get()
-		.then((querySnapshot) => {
-			document.getElementById("follower-count").innerHTML = `${querySnapshot.size}`;
-			let html = '';
-			querySnapshot.forEach((doc) => {
-			let followerInfo = doc.data();
-			let followerhtml = `
+	firebase.auth().onAuthStateChanged(function(user) {
+		let urlRef = window.location.href;
+		if (user) {
+			let followersRef = db.collection('users').doc(user.uid).collection('followers');
+
+			if (urlRef.includes("?user=")) {
+				followersRef = db.collection('users').doc(urlRef.substring(urlRef.indexOf("?user=") + 6)).collection('followers');
+			}
+			followersRef.get()
+				.then((querySnapshot) => {
+					document.getElementById("follower-count").innerHTML = `${querySnapshot.size}`;
+					let html = '';
+					querySnapshot.forEach((doc) => {
+						let followerInfo = doc.data();
+						let followerhtml = `
 				<a href="#" class="follower w-inline-block">
 					<div class="div-block-712"></div>
 					<div class="text-block-180" id='${doc.id}'>${followerInfo.name}</div>
 				</a>`;
-			html += followerhtml;
-			});
-		friendsListContainer.innerHTML = html;
-		});
-	} else {
-		console.log('user not logged in.');
-	}
-  });
+						html += followerhtml;
+					});
+					friendsListContainer.innerHTML = html;
+				});
+		} else {
+			console.log('user not logged in.');
+		}
+	});
 }
 
 // function openProfile(userID) {
@@ -401,48 +401,48 @@ function setupFollowerList() {
 
 friendsListContainer.addEventListener('click', (e) => {
 	if (e.target.matches('.text-block-180')) {
-	  window.location.href = `https://wmw.eco/profile?user=${e.target.id}`;
-  }
+		window.location.href = `https://wmw.eco/profile?user=${e.target.id}`;
+	}
 });
-	
-	
+
+
 const search = instantsearch({
-  indexName: 'users',
-  searchClient: algoliasearch(
-    '6MV9DYEKML',
-    '7781e10fe7c79ea43fac337934ffaab9'
-  ),
+	indexName: 'users',
+	searchClient: algoliasearch(
+		'6MV9DYEKML',
+		'7781e10fe7c79ea43fac337934ffaab9'
+	),
 });
-	
-	
-	
+
+
+
 search.addWidget(
 	instantsearch.widgets.searchBox({
-	container: '#user-search-container',
-	// Optional parameters
-	placeholder: "Search users...",
-	autofocus: false,
-	searchAsYouType: true,
-	showReset: false,
-	showSubmit: false,
-	showLoadingIndicator: false,
+		container: '#user-search-container',
+		// Optional parameters
+		placeholder: "Search users...",
+		autofocus: false,
+		searchAsYouType: true,
+		showReset: false,
+		showSubmit: false,
+		showLoadingIndicator: false,
 	})
 );
 
 search.addWidget(
 	instantsearch.widgets.hits({
-		container: '#user-results-container'
-	  templates: {
-	    item: `
-	      <h2>
-		{{ __hitIndex }}:
-		{{#helpers.highlight}}{ "attribute": "name" }{{/helpers.highlight}}
-	      </h2>
-	      <p>{{ description }}</p>
-	    `,
-	  },
-	});
-)
+		container: '#user-results-container',
+		templates: {
+			item: `
+		      <h2>
+			{{ __hitIndex }}:
+			{{#helpers.highlight}}{ "attribute": "name" }{{/helpers.highlight}}
+		      </h2>
+		      <p>{{ description }}</p>
+	    	`,
+		},
+	})
+);
 
 search.start();
 
