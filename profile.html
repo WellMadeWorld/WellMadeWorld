@@ -433,7 +433,12 @@ search.addWidget(
 	instantsearch.widgets.hits({
 		container: '#user-hits-container',
 		templates: {
-			item: data => `<a href = "https://www.wmw.eco/profile?user=${data.objectID}">${data.name}</a>`,
+			item: data => `
+			<a href = "https://www.wmw.eco/profile?user=${data.objectID} class="searchUser">
+				<div class="div-block-712"></div>
+				<div class="searchUserText"> ${data.name} </div>
+			</a>
+			`,
 		},
 	})
 );
