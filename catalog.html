@@ -238,12 +238,14 @@ firebase.auth().onAuthStateChanged((user) => {
 	      400: {
 		items: 2,
 	        controls: false,
-	        mouseDrag: true
+	        mouseDrag: true,
+		preventScrollOnTouch: 'force'
 	      },  
 	      0: {
 		items: 1,
 	        controls: false,
-	        mouseDrag: true
+	        mouseDrag: true,
+		preventScrollOnTouch: 'force'
 	      }
 	    }
       });
