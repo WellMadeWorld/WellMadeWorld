@@ -429,6 +429,21 @@ search.addWidget(
 	})
 );
 
+search.addWidget(
+	instantsearch.widgets.hits({
+		container: '#user-results-container'
+	  templates: {
+	    item: `
+	      <h2>
+		{{ __hitIndex }}:
+		{{#helpers.highlight}}{ "attribute": "name" }{{/helpers.highlight}}
+	      </h2>
+	      <p>{{ description }}</p>
+	    `,
+	  },
+	});
+)
+
 search.start();
 
 	
