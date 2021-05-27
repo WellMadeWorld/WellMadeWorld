@@ -433,10 +433,10 @@ search.addWidget(
 		showSubmit: false,
 		showLoadingIndicator: false,
 		queryHook(query, searchFunction) {
-			console.log(query);
 			if(query){
-				console.log("query exists");
+				$('#user-hits-container').show();
 			} else {
+				S('#user-hits-container').hide();
 				console.log("HIDE THE RESULTS");
 			}
 			searchFunction(query);
