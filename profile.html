@@ -1,5 +1,13 @@
 <script>
 'use strict';
+	
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    return;
+  } else {
+    window.location.href = "https://www.wmw.eco/log-in";
+  }
+});
 
 
 const getUserFavorites = () => {
@@ -437,7 +445,6 @@ search.addWidget(
 				$('#user-hits-container').show();
 			} else {
 				$('#user-hits-container').hide();
-				console.log("HIDE THE RESULTS");
 			}
 			searchFunction(query);
 		},
