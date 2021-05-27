@@ -412,6 +412,12 @@ const search = instantsearch({
 		'6MV9DYEKML',
 		'7781e10fe7c79ea43fac337934ffaab9'
 	),
+	searchFunction: function(helper) {
+    		if (helper.state.query.length === 0) {
+        		return; // do not trigger search
+   		}
+    		helper.search(); // trigger search
+  	},
 });
 
 
@@ -426,6 +432,15 @@ search.addWidget(
 		showReset: false,
 		showSubmit: false,
 		showLoadingIndicator: false,
+		queryHook(query, searchFunction) {
+			console.log(query);
+			if(query){
+				console.log("query exists");
+			} else {
+				console.log("HIDE THE RESULTS");
+			}
+			searchFunction(query);
+		},
 	})
 );
 
